@@ -33,7 +33,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
   }
 
   Future<void> _fetchPatientDetails() async {
-    final url = Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientDetails');
+    final url =
+        // Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientDetails');
+        Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientDetailsTest');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({'emplid': widget.visitId, 'pass': ""});
 
@@ -45,11 +47,13 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
 
         if (jsonResponse['status'] == '200') {
           setState(() {
-            patientDetails = (jsonResponse['detailsH'] as List<dynamic>?)?.first;
+            patientDetails =
+                (jsonResponse['detailsH'] as List<dynamic>?)?.first;
             medications = jsonResponse['detailsB'] as List<dynamic>?;
           });
         } else {
-          _showSnackBar('Failed to load patient details: ${jsonResponse['message']}');
+          _showSnackBar(
+              'Failed to load patient details: ${jsonResponse['message']}');
         }
       } else {
         _showSnackBar('Failed to load patient details');
@@ -77,7 +81,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
       appBar: AppBar(
         title: const Text(
           'Home Medication Sheet',
-          style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.teal,
         actions: [
@@ -98,8 +103,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   const Text('Profile',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  const Text('Profile / ข้อมูลผู้ป่วย',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                   Card(
                     child: ListTile(
                       title: Text('${patientDetails!['patient_name'] ?? 'N/A'}',
@@ -109,41 +115,53 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                         children: [
                           Text('HN : ${patientDetails!['hn'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
-                          Text('Gender : ${patientDetails!['fix_gender_id'] ?? 'N/A'}',
+                          Text(
+                              'Gender : ${patientDetails!['fix_gender_id'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
-                          Text('Birth date : ${patientDetails!['birthdate'] ?? 'N/A'}',
+                          Text('DOB : ${patientDetails!['birthdate'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
                           Text('Age : ${patientDetails!['age'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
-                          Text('Diagnosis : ${patientDetails!['diagnosis'] ?? 'N/A'}',
+                          Text(
+                              'Episode Date / Number : ${patientDetails!['visit_date'] ?? 'N/A'},${patientDetails!['visit_time'] ?? 'N/A'}[${patientDetails!['en'] ?? 'N/A'}]',
                               style: const TextStyle(fontSize: 16)),
-                          Text('Allergy : ${patientDetails!['drugaallergy'] ?? 'N/A'}',
+                          Text(
+                              'Diagnosis : ${patientDetails!['diagnosis'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
-                          Text('Doctor : ${patientDetails!['opddoctorname'] ?? 'N/A'}',
+                          Text(
+                              'Allergy : ${patientDetails!['drugaallergy'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.volume_up),
-                        onPressed: () {
-                          final detailsText = """
+                          Text(
+                              'Ward : ${patientDetails!['roombed'] ?? 'N/A'},${patientDetails!['opddoctorname'] ?? 'N/A'}',
+                              style: const TextStyle(fontSize: 16)),
+                          Center(
+                            child: IconButton(
+                              icon: const Icon(Icons.volume_up),
+                              onPressed: () {
+                                 final String ageValue = (patientDetails!['age'] ?? 'N/A').toString().replaceAll(RegExp(r'\D'), '');
+                                final detailsText = """
                             ${patientDetails!['patient_name'] ?? 'N/A'}
                             HN: ${patientDetails!['hn'] ?? 'N/A'}
-                            Gender: ${patientDetails!['fix_gender_id'] ?? 'N/A'}
-                            Birth date: ${patientDetails!['birthdate'] ?? 'N/A'}
-                            Age: ${patientDetails!['age'] ?? 'N/A'}
-                            Diagnosis: ${patientDetails!['diagnosis'] ?? 'N/A'}
-                            Allergy: ${patientDetails!['drugaallergy'] ?? 'N/A'}
-                            Doctor: ${patientDetails!['opddoctorname'] ?? 'N/A'}
+                            Gender/เพศ: ${patientDetails!['fix_gender_id'] ?? 'N/A'}
+                            D.O.B/วันเกิด: ${patientDetails!['birthdate'] ?? 'N/A'}
+                            Age/อายุ: $ageValue
+                            Episode Date / Number/วันที่เข้าพบแพทย์: ${patientDetails!['visit_date'] ?? 'N/A'},${patientDetails!['visit_time'] ?? 'N/A'},${patientDetails!['en'] ?? 'N/A'}
+                            Diagnosis/วินิจฉัย: ${patientDetails!['diagnosis'] ?? 'N/A'}
+                            Allergy/การแพ้: ${patientDetails!['drugaallergy'] ?? 'N/A'}
+                            Ward/ห้อง: ${patientDetails!['roombed'] ?? 'N/A'}${patientDetails!['opddoctorname'] ?? 'N/A'}
                           """;
-                          _speakText(detailsText);
-                        },
+                                _speakText(detailsText);
+                              },
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text('Medications',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  const Text('Medications / ยา',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -157,29 +175,51 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Name : ${medication['item_name'] ?? 'N/A'}',
+                              Center(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  child: Image.network(
+                                    medication['imagename'] ?? '',
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text('${medication['item_name'] ?? 'N/A'}',
                                   style: const TextStyle(fontSize: 16)),
-                              Text('Instructions : ${medication['instruction_text_line1'] ?? 'N/A'}',
+                              Text('${medication['th_name'] ?? 'N/A'}',
                                   style: const TextStyle(fontSize: 16)),
-                              Text('${medication['instruction_text_line2'] ?? ''}',
+                              Text(
+                                  'Instructions : ${medication['instruction_text_line1'] ?? 'N/A'}',
                                   style: const TextStyle(fontSize: 16)),
-                              Text('${medication['instruction_text_line3'] ?? ''}',
+                              Text(
+                                  '${medication['instruction_text_line2'] ?? ''}',
                                   style: const TextStyle(fontSize: 16)),
-                              Text('Description : ${medication['item_deacription'] ?? 'N/A'}',
+                              Text(
+                                  '${medication['instruction_text_line3'] ?? ''}',
                                   style: const TextStyle(fontSize: 16)),
-                              Text('Caution : ${medication['item_caution'] ?? 'N/A'}',
+                              Text(
+                                  'Description : ${medication['item_deacription'] ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16)),
+                              Text(
+                                  'Caution : ${medication['item_caution'] ?? 'N/A'}',
                                   style: const TextStyle(fontSize: 16)),
                               Center(
                                 child: IconButton(
                                   icon: const Icon(Icons.volume_up),
                                   onPressed: () {
                                     final medicationText = """
-                                    Medication Name: ${medication['item_name'] ?? 'N/A'}
-                                      Instructions: ${medication['instruction_text_line1'] ?? 'N/A'}
+                                    ${medication['item_name'] ?? 'N/A'}
+                                    ${medication['th_name'] ?? 'N/A'}
+                                      Instructions/คำแนะนำ: ${medication['instruction_text_line1'] ?? 'N/A'}
                                       ${medication['instruction_text_line2'] ?? ''}
                                       ${medication['instruction_text_line3'] ?? ''}
-                                      Description: ${medication['item_deacription'] ?? 'N/A'}
-                                      Caution: ${medication['item_caution'] ?? 'N/A'}
+                                      Description/คำอธิบาย: ${medication['item_deacription'] ?? 'N/A'}
+                                      Caution/คำเตือน: ${medication['item_caution'] ?? 'N/A'}
                                     """;
                                     _speakText(medicationText);
                                   },

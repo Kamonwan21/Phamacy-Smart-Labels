@@ -16,44 +16,54 @@ class _LoginPageState extends State<LoginPage> {
   final _navigatorKey = GlobalKey<NavigatorState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  Future<void> _login() async {
-    final url =
-        Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientVerify');
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode(
-        {'emplid': _usernameController.text, 'pass': _passwordController.text});
+Future<void> _login() async {
+  final url = Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientVerifyTest');
+  // Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientVerify');
+  final headers = {'Content-Type': 'application/json'};
+  final body = jsonEncode({'emplid': _usernameController.text, 'pass': _passwordController.text});
+  
+  try {
     final response = await http.post(url, headers: headers, body: body);
-
+    final jsonResponse = jsonDecode(response.body);
+    
+    print('Response Status Code: ${response.statusCode}');
+    print('Response Body: $jsonResponse'); // Debugging output
+    
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      print('Login Response: $jsonResponse'); // Debugging output
       final userlogin = jsonResponse['userlogin'];
       if (userlogin is List && userlogin.isNotEmpty) {
         final visitId = userlogin[0]['visit_id'];
         print('visit_id type: ${visitId.runtimeType}');
         print('visit_id: $visitId'); // Debugging output
-
+        _showSnackBar(jsonResponse['message']);
         if (visitId != null) {
-          _navigatorKey.currentState?.pushReplacement(MaterialPageRoute(
-            builder: (context) => PatientDetailsPage(visitId: visitId,),
-          ));
-        }else if (response.statusCode == 404) {
-         _showSnackBar('Login Failed');
-        }else {
-          _showSnackBar('Login Failed');
+          _navigatorKey.currentState?.pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => PatientDetailsPage(visitId: visitId),
+            ),
+          );
         }
+      } else {
+        _showSnackBar('Login failed : No visit ID found.');
       }
+    } else if (response.statusCode == 404) {
+      _showSnackBar('Error 404: Resource not found');
+    } else {
+      _showSnackBar('Unexpected error: ${jsonResponse['message'] ?? 'Unknown error'}');
     }
+  } catch (e) {
+    _showSnackBar('An error occurred: $e');
   }
+}
 
-  void _showSnackBar(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+void _showSnackBar(String message) {
+  final snackBar = SnackBar(
+    content: Text(message),
+    duration: const Duration(seconds: 2),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                               TextFormField(
                                 controller: _usernameController,
                                 decoration: const InputDecoration(
-                                    labelText: 'Username'),
+                                  hintText: "กรุณากรอกหมายเลข HN ",
+                                  labelText: 'Username',
+                                  helperText:
+                                      'Please enter your HN number here.', // Helper text
+                                ),
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter your HN';
@@ -87,7 +101,12 @@ class _LoginPageState extends State<LoginPage> {
                                 controller: _passwordController,
                                 obscureText: true,
                                 decoration: const InputDecoration(
-                                    labelText: 'Password'),
+                                  hintText:
+                                      "กรุณากรอกหมายเลข 4 ตัวท้ายหลังบัตรประชาชน",
+                                  labelText: 'Password',
+                                  helperText:
+                                      'Please enter \nthe last 4 digits of your Passport or your Birthday Ex. 19950919.\nกรอกหมายเลข 4 ตัวท้ายหลังบัตรประชาชน หรือ วันเดือนปีเกิด \nเช่น 19950919', // Helper text
+                                ),
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter your 4 Ids';
