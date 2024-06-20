@@ -1,0 +1,15 @@
+com.example.flutter_application_1.app-jetified-annotation-experimental-1.1.0-0 C:\Users\USER\.gradle\caches\transforms-3\238c4b9ab7a6b78f590ae4b491e7bdd6\transformed\jetified-annotation-experimental-1.1.0\res
+com.example.flutter_application_1.app-jetified-window-1.0.0-beta04-1 C:\Users\USER\.gradle\caches\transforms-3\334798d3a2fab815100795af6ab4828f\transformed\jetified-window-1.0.0-beta04\res
+com.example.flutter_application_1.app-jetified-window-java-1.0.0-beta04-2 C:\Users\USER\.gradle\caches\transforms-3\777203783d4195e8a4259115cf7654af\transformed\jetified-window-java-1.0.0-beta04\res
+com.example.flutter_application_1.app-core-1.8.0-3 C:\Users\USER\.gradle\caches\transforms-3\8d3d6e4b14d9a21005180785ba0b8c9e\transformed\core-1.8.0\res
+com.example.flutter_application_1.app-lifecycle-runtime-2.3.1-4 C:\Users\USER\.gradle\caches\transforms-3\b3be2a04e58e57a026c307d60eedd859\transformed\lifecycle-runtime-2.3.1\res
+com.example.flutter_application_1.app-jetified-core-ktx-1.8.0-5 C:\Users\USER\.gradle\caches\transforms-3\bb09e70dccc92a7fee67ba7cb931b810\transformed\jetified-core-ktx-1.8.0\res
+com.example.flutter_application_1.app-debug-6 C:\flutterapps\Phamacy-02\flutter_application_1\android\app\src\debug\res
+com.example.flutter_application_1.app-main-7 C:\flutterapps\Phamacy-02\flutter_application_1\android\app\src\main\res
+com.example.flutter_application_1.app-pngs-8 C:\flutterapps\Phamacy-02\flutter_application_1\build\app\generated\res\pngs\debug
+com.example.flutter_application_1.app-resValues-9 C:\flutterapps\Phamacy-02\flutter_application_1\build\app\generated\res\resValues\debug
+com.example.flutter_application_1.app-rs-10 C:\flutterapps\Phamacy-02\flutter_application_1\build\app\generated\res\rs\debug
+com.example.flutter_application_1.app-mergeDebugResources-11 C:\flutterapps\Phamacy-02\flutter_application_1\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.example.flutter_application_1.app-mergeDebugResources-12 C:\flutterapps\Phamacy-02\flutter_application_1\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.example.flutter_application_1.app-merged_res-13 C:\flutterapps\Phamacy-02\flutter_application_1\build\app\intermediates\merged_res\debug
+com.example.flutter_application_1.app-packaged_res-14 C:\flutterapps\Phamacy-02\flutter_application_1\build\flutter_tts\intermediates\packaged_res\debug

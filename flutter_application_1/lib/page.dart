@@ -35,7 +35,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
   Future<void> _fetchPatientDetails() async {
     final url =
         // Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientDetails');
-        Uri.parse('http://10.143.10.37/ApiPhamacySmartLabel/PatientDetailsTest');
+        Uri.parse(
+            'http://10.143.10.37/ApiPhamacySmartLabel/PatientDetailsTest');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({'emplid': widget.visitId, 'pass': ""});
 
@@ -134,11 +135,31 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                           Text(
                               'Ward : ${patientDetails!['roombed'] ?? 'N/A'},${patientDetails!['opddoctorname'] ?? 'N/A'}',
                               style: const TextStyle(fontSize: 16)),
+                          RichText(
+                            text: const TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Download PDF :',
+                                  style: TextStyle(fontSize: 16,
+                                      color: Colors.black), // สีดำตามปกติ
+                                ),
+                                TextSpan(
+                                  text: '  HomeMedicationSheet',
+                                  style: TextStyle(fontSize: 16,
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
                           Center(
                             child: IconButton(
                               icon: const Icon(Icons.volume_up),
                               onPressed: () {
-                                 final String ageValue = (patientDetails!['age'] ?? 'N/A').toString().replaceAll(RegExp(r'\D'), '');
+                                final String ageValue =
+                                    (patientDetails!['age'] ?? 'N/A')
+                                        .toString()
+                                        .replaceAll(RegExp(r'\D'), '');
                                 final detailsText = """
                             ${patientDetails!['patient_name'] ?? 'N/A'}
                             HN: ${patientDetails!['hn'] ?? 'N/A'}
